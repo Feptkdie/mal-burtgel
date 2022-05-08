@@ -251,7 +251,7 @@ class _EditPageState extends State<EditPage> {
                   },
                   decoration: const InputDecoration(
                     contentPadding: EdgeInsets.only(bottom: 8.0),
-                    hintText: "Хаяг..",
+                    hintText: "Мал тооллого хийсэн газар..",
                   ),
                 ),
               ),

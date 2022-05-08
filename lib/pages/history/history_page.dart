@@ -239,9 +239,9 @@ class _HistoryPageState extends State<HistoryPage> {
                                           child: Align(
                                             alignment: Alignment.centerLeft,
                                             child: Ctext(
-                                              text: historyItems[index]
-                                                      ["comment"]
-                                                  .toString(),
+                                              text: "Шалтгаан:\n" +
+                                                  historyItems[index]["comment"]
+                                                      .toString(),
                                               maxLine: 100,
                                               textOverflow:
                                                   TextOverflow.ellipsis,

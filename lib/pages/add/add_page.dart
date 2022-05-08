@@ -226,7 +226,7 @@ class _AddPageState extends State<AddPage> {
                   },
                   decoration: const InputDecoration(
                     contentPadding: EdgeInsets.only(bottom: 8.0),
-                    hintText: "Хаяг..",
+                    hintText: "Мал тооллого хийсэн газар..",
                   ),
                 ),
               ),
