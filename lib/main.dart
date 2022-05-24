@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'pages/home_page.dart';
+import 'package:too/pages/auth/auth_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,9 +12,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Too',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.green,
       ),
-      home: const HomePage(),
+      home: const AuthPage(),
     );
   }
 }

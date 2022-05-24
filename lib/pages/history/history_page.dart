@@ -28,7 +28,7 @@ class _HistoryPageState extends State<HistoryPage> {
 
     final response = await https.post(
       Uri.parse(mainApiUrl + "delete-animal"),
-      body: {"id": historyItems[index]["id"].toString()},
+      body: {"id": nowItems[index]["id"].toString()},
     );
 
     print(response.body);
@@ -36,16 +36,39 @@ class _HistoryPageState extends State<HistoryPage> {
       var body = json.decode(response.body);
       if (body["status"]) {
         showSnackBar(body["message"], globalKey);
-        historyItems.clear();
+        nowItems.clear();
         body["animals"].forEach((value) {
-          historyItems.add(value);
+          nowItems.add(value);
         });
-        horseCount = body["horseCount"];
-        cattleCount = body["cattleCount"];
-        camelCount = body["camelCount"];
-        sheepCount = body["sheepCount"];
-        goatCount = body["goatCount"];
-        allAnimalCount = body["allAnimalCount"];
+        allHorseCount = body["horseCount"];
+        allCattleCount = body["cattleCount"];
+        allCamelCount = body["camelCount"];
+        allSheepCount = body["sheepCount"];
+        allGoatCount = body["goatCount"];
+        allAllAnimalCount = body["allAnimalCount"];
+        nowItems.clear();
+        historyItems.forEach((value) {
+          if (value["created_at"] != null) {
+            DateTime valueDate = DateTime.parse(value["created_at"].toString());
+            if (valueDate.year == DateTime.now().year &&
+                valueDate.month == DateTime.now().month &&
+                valueDate.day == DateTime.now().day) {
+              nowItems.add(value);
+              if (value["name"] == "Хонь") {
+                sheepCount += int.parse(value["amount"].toString());
+              } else if (value["name"] == "Ямаа") {
+                goatCount += int.parse(value["amount"].toString());
+              } else if (value["name"] == "Үхэр") {
+                cattleCount += int.parse(value["amount"].toString());
+              } else if (value["name"] == "Тэмээ") {
+                camelCount += int.parse(value["amount"].toString());
+              } else if (value["name"] == "Морь") {
+                horseCount += int.parse(value["amount"].toString());
+              }
+              allAnimalCount += int.parse(value["amount"].toString());
+            }
+          }
+        });
         setState(() {});
       } else {
         showSnackBar(body["message"], globalKey);
@@ -111,7 +134,7 @@ class _HistoryPageState extends State<HistoryPage> {
   Widget _listItem(double height, double width) => Expanded(
         child: AnimationLimiter(
           child: ListView.builder(
-            itemCount: historyItems.length,
+            itemCount: nowItems.length,
             itemBuilder: (context, index) =>
                 AnimationConfiguration.staggeredList(
               position: index,
@@ -124,9 +147,8 @@ class _HistoryPageState extends State<HistoryPage> {
                       top: index == 0 ? height * 0.03 : height * 0.024,
                       left: width * 0.04,
                       right: width * 0.04,
-                      bottom: index == (historyItems.length - 1)
-                          ? height * 0.04
-                          : 0.0,
+                      bottom:
+                          index == (nowItems.length - 1) ? height * 0.04 : 0.0,
                     ),
                     child: Container(
                       decoration: BoxDecoration(
@@ -154,32 +176,31 @@ class _HistoryPageState extends State<HistoryPage> {
                                   child: Column(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
-                                      if (historyItems[index]["name"] == "Хонь")
+                                      if (nowItems[index]["name"] == "Хонь")
                                         Image.asset(
                                           "assets/images/sheep.png",
                                           height: height * 0.1,
                                           width: height * 0.1,
                                         ),
-                                      if (historyItems[index]["name"] == "Ямаа")
+                                      if (nowItems[index]["name"] == "Ямаа")
                                         Image.asset(
                                           "assets/images/goat.png",
                                           height: height * 0.1,
                                           width: height * 0.1,
                                         ),
-                                      if (historyItems[index]["name"] == "Үхэр")
+                                      if (nowItems[index]["name"] == "Үхэр")
                                         Image.asset(
                                           "assets/images/cattle.png",
                                           height: height * 0.1,
                                           width: height * 0.1,
                                         ),
-                                      if (historyItems[index]["name"] == "Морь")
+                                      if (nowItems[index]["name"] == "Морь")
                                         Image.asset(
                                           "assets/images/horse.png",
                                           height: height * 0.1,
                                           width: height * 0.1,
                                         ),
-                                      if (historyItems[index]["name"] ==
-                                          "Тэмээ")
+                                      if (nowItems[index]["name"] == "Тэмээ")
                                         Image.asset(
                                           "assets/images/camel.png",
                                           height: height * 0.1,
@@ -188,7 +209,7 @@ class _HistoryPageState extends State<HistoryPage> {
                                       Align(
                                         alignment: Alignment.centerLeft,
                                         child: Ctext(
-                                          text: historyItems[index]["name"]
+                                          text: nowItems[index]["name"]
                                               .toString(),
                                           normal: true,
                                           textOverflow: TextOverflow.ellipsis,
@@ -198,7 +219,7 @@ class _HistoryPageState extends State<HistoryPage> {
                                       Align(
                                         alignment: Alignment.centerLeft,
                                         child: Ctext(
-                                          text: historyItems[index]["amount"]
+                                          text: nowItems[index]["amount"]
                                                   .toString() +
                                               " ширхэг",
                                           maxLine: 2,
@@ -218,8 +239,7 @@ class _HistoryPageState extends State<HistoryPage> {
                                             ),
                                             Expanded(
                                               child: Ctext(
-                                                text: historyItems[index]
-                                                        ["address"]
+                                                text: nowItems[index]["address"]
                                                     .toString(),
                                                 maxLine: 4,
                                                 textOverflow:
@@ -230,8 +250,7 @@ class _HistoryPageState extends State<HistoryPage> {
                                           ],
                                         ),
                                       ),
-                                      if (historyItems[index]["comment"] !=
-                                          null)
+                                      if (nowItems[index]["comment"] != null)
                                         Padding(
                                           padding: EdgeInsets.only(
                                             top: height * 0.02,
@@ -240,7 +259,7 @@ class _HistoryPageState extends State<HistoryPage> {
                                             alignment: Alignment.centerLeft,
                                             child: Ctext(
                                               text: "Шалтгаан:\n" +
-                                                  historyItems[index]["comment"]
+                                                  nowItems[index]["comment"]
                                                       .toString(),
                                               maxLine: 100,
                                               textOverflow:
@@ -273,31 +292,31 @@ class _HistoryPageState extends State<HistoryPage> {
                               ),
                               child: Row(
                                 children: [
-                                  if (historyItems[index]["name"] == "Хонь")
+                                  if (nowItems[index]["name"] == "Хонь")
                                     Image.asset(
                                       "assets/images/sheep.png",
                                       height: height * 0.1,
                                       width: height * 0.1,
                                     ),
-                                  if (historyItems[index]["name"] == "Ямаа")
+                                  if (nowItems[index]["name"] == "Ямаа")
                                     Image.asset(
                                       "assets/images/goat.png",
                                       height: height * 0.1,
                                       width: height * 0.1,
                                     ),
-                                  if (historyItems[index]["name"] == "Үхэр")
+                                  if (nowItems[index]["name"] == "Үхэр")
                                     Image.asset(
                                       "assets/images/cattle.png",
                                       height: height * 0.1,
                                       width: height * 0.1,
                                     ),
-                                  if (historyItems[index]["name"] == "Морь")
+                                  if (nowItems[index]["name"] == "Морь")
                                     Image.asset(
                                       "assets/images/horse.png",
                                       height: height * 0.1,
                                       width: height * 0.1,
                                     ),
-                                  if (historyItems[index]["name"] == "Тэмээ")
+                                  if (nowItems[index]["name"] == "Тэмээ")
                                     Image.asset(
                                       "assets/images/camel.png",
                                       height: height * 0.1,
@@ -312,7 +331,7 @@ class _HistoryPageState extends State<HistoryPage> {
                                         Align(
                                           alignment: Alignment.centerLeft,
                                           child: Ctext(
-                                            text: historyItems[index]["name"]
+                                            text: nowItems[index]["name"]
                                                 .toString(),
                                             normal: true,
                                             textOverflow: TextOverflow.ellipsis,
@@ -322,7 +341,7 @@ class _HistoryPageState extends State<HistoryPage> {
                                         Align(
                                           alignment: Alignment.centerLeft,
                                           child: Ctext(
-                                            text: historyItems[index]["amount"]
+                                            text: nowItems[index]["amount"]
                                                     .toString() +
                                                 " ширхэг",
                                             maxLine: 2,
@@ -342,7 +361,7 @@ class _HistoryPageState extends State<HistoryPage> {
                                               ),
                                               Expanded(
                                                 child: Ctext(
-                                                  text: historyItems[index]
+                                                  text: nowItems[index]
                                                           ["address"]
                                                       .toString(),
                                                   maxLine: 1,

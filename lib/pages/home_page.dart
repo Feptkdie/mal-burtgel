@@ -21,26 +21,57 @@ class _HomePageState extends State<HomePage> {
   final GlobalKey<ScaffoldState> globalKey = GlobalKey<ScaffoldState>();
   late final AudioCache _audioCache;
   bool _isLoad = false;
+  DateTime _now = DateTime.now();
 
   Future<void> _loadData() async {
     setState(() {
       _isLoad = true;
     });
 
-    final response = await https.get(Uri.parse(mainApiUrl + "get-data"));
+    final response = await https.post(
+      Uri.parse(mainApiUrl + "get-data"),
+      body: {"token": token},
+    );
     print(response.body);
     if (response.statusCode == 201) {
       var body = json.decode(response.body);
-      historyItems.clear();
-      body["animals"].forEach((value) {
-        historyItems.add(value);
-      });
-      horseCount = body["horseCount"];
-      cattleCount = body["cattleCount"];
-      camelCount = body["camelCount"];
-      sheepCount = body["sheepCount"];
-      goatCount = body["goatCount"];
-      allAnimalCount = body["allAnimalCount"];
+      if (body["status"]) {
+        historyItems.clear();
+        body["animals"].forEach((value) {
+          historyItems.add(value);
+        });
+        allHorseCount = body["horseCount"];
+        allCattleCount = body["cattleCount"];
+        allCamelCount = body["camelCount"];
+        allSheepCount = body["sheepCount"];
+        allGoatCount = body["goatCount"];
+        allAllAnimalCount = body["allAnimalCount"];
+        nowItems.clear();
+        historyItems.forEach((value) {
+          if (value["created_at"] != null) {
+            DateTime valueDate = DateTime.parse(value["created_at"].toString());
+            if (valueDate.year == _now.year &&
+                valueDate.month == _now.month &&
+                valueDate.day == _now.day) {
+              nowItems.add(value);
+              if (value["name"] == "Хонь") {
+                sheepCount += int.parse(value["amount"].toString());
+              } else if (value["name"] == "Ямаа") {
+                goatCount += int.parse(value["amount"].toString());
+              } else if (value["name"] == "Үхэр") {
+                cattleCount += int.parse(value["amount"].toString());
+              } else if (value["name"] == "Тэмээ") {
+                camelCount += int.parse(value["amount"].toString());
+              } else if (value["name"] == "Морь") {
+                horseCount += int.parse(value["amount"].toString());
+              }
+              allAnimalCount += int.parse(value["amount"].toString());
+            }
+          }
+        });
+      } else {
+        showSnackBar(body["message"].toString(), globalKey);
+      }
     } else {
       showSnackBar(
         "Сервер алдаа гарлаа, Та дахин оролдоно уу",
@@ -101,7 +132,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                       const Ctext(
-                        text: "Малын тоо",
+                        text: "Өнөөдөр",
                         large: true,
                         bold: true,
                       ),

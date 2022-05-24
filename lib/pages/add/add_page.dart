@@ -35,7 +35,7 @@ class _AddPageState extends State<AddPage> {
     setState(() {
       _isLoad = true;
     });
-
+    print(user);
     final response = await https.post(
       Uri.parse(mainApiUrl + "register-animal"),
       body: {
@@ -43,6 +43,13 @@ class _AddPageState extends State<AddPage> {
         "amount": _amountTEC.text,
         "address": _addressTEC.text,
         "comment": _commentTEC.text,
+        "user_id": user["id"].toString(),
+        "user_name": user["surname"].toString(),
+        "user_phone": user["phone"].toString(),
+        "owner_id": user["owner_id"].toString(),
+        "owner_name": user["owner_name"].toString(),
+        "owner_phone": user["owner_phone"].toString(),
+        "token": token,
       },
     );
 
@@ -50,18 +57,44 @@ class _AddPageState extends State<AddPage> {
     if (response.statusCode == 201) {
       var body = json.decode(response.body);
       if (body["status"]) {
-        showSnackBar(body["message"], globalKey);
         historyItems.clear();
         body["animals"].forEach((value) {
           historyItems.add(value);
         });
-        horseCount = body["horseCount"];
-        cattleCount = body["cattleCount"];
-        camelCount = body["camelCount"];
-        sheepCount = body["sheepCount"];
-        goatCount = body["goatCount"];
-        allAnimalCount = body["allAnimalCount"];
+        allHorseCount = body["horseCount"];
+        allCattleCount = body["cattleCount"];
+        allCamelCount = body["camelCount"];
+        allSheepCount = body["sheepCount"];
+        allGoatCount = body["goatCount"];
+        allAllAnimalCount = body["allAnimalCount"];
+        nowItems.clear();
+        historyItems.forEach((value) {
+          if (value["created_at"] != null) {
+            DateTime valueDate = DateTime.parse(value["created_at"].toString());
+            if (valueDate.year == DateTime.now().year &&
+                valueDate.month == DateTime.now().month &&
+                valueDate.day == DateTime.now().day) {
+              nowItems.add(value);
+              if (value["name"] == "Хонь") {
+                sheepCount += int.parse(value["amount"].toString());
+              } else if (value["name"] == "Ямаа") {
+                goatCount += int.parse(value["amount"].toString());
+              } else if (value["name"] == "Үхэр") {
+                cattleCount += int.parse(value["amount"].toString());
+              } else if (value["name"] == "Тэмээ") {
+                camelCount += int.parse(value["amount"].toString());
+              } else if (value["name"] == "Морь") {
+                horseCount += int.parse(value["amount"].toString());
+              }
+              allAnimalCount += int.parse(value["amount"].toString());
+            }
+          }
+        });
         widget.onChange.call();
+        _addressTEC.clear();
+        _commentTEC.clear();
+        _amountTEC.clear();
+        showSnackBar(body["message"], globalKey);
       } else {
         showSnackBar(body["message"], globalKey);
       }
