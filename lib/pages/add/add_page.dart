@@ -27,9 +27,16 @@ class _AddPageState extends State<AddPage> {
   final _amountTEC = TextEditingController();
   final _commentTEC = TextEditingController();
   final _addressTEC = TextEditingController();
+  final _alive1TEC = TextEditingController();
+  final _alive2TEC = TextEditingController();
+  final _alive3TEC = TextEditingController();
+  final _dead1TEC = TextEditingController();
+  final _dead2TEC = TextEditingController();
+  final _dead3TEC = TextEditingController();
   late final AudioCache _audioCache;
   String _selectedCategory = "Хонь";
   bool _isLoad = false;
+  String _status = "Шинээр төлөлсөн";
 
   Future<void> _request() async {
     setState(() {
@@ -49,6 +56,12 @@ class _AddPageState extends State<AddPage> {
         "owner_id": user["owner_id"].toString(),
         "owner_name": user["owner_name"].toString(),
         "owner_phone": user["owner_phone"].toString(),
+        "alive1": _alive1TEC.text,
+        "alive2": _alive2TEC.text,
+        "alive3": _alive3TEC.text,
+        "dead1": _dead1TEC.text,
+        "dead2": _dead2TEC.text,
+        "dead3": _dead3TEC.text,
         "token": token,
       },
     );
@@ -76,17 +89,65 @@ class _AddPageState extends State<AddPage> {
                 valueDate.day == DateTime.now().day) {
               nowItems.add(value);
               if (value["name"] == "Хонь") {
-                sheepCount += int.parse(value["amount"].toString());
+                sheepCount = int.parse(value["amount"].toString());
               } else if (value["name"] == "Ямаа") {
-                goatCount += int.parse(value["amount"].toString());
+                goatCount = int.parse(value["amount"].toString());
               } else if (value["name"] == "Үхэр") {
-                cattleCount += int.parse(value["amount"].toString());
+                cattleCount = int.parse(value["amount"].toString());
               } else if (value["name"] == "Тэмээ") {
-                camelCount += int.parse(value["amount"].toString());
+                camelCount = int.parse(value["amount"].toString());
               } else if (value["name"] == "Морь") {
-                horseCount += int.parse(value["amount"].toString());
+                horseCount = int.parse(value["amount"].toString());
               }
               allAnimalCount += int.parse(value["amount"].toString());
+            }
+            if (valueDate.year == DateTime.now().year &&
+                valueDate.month == DateTime.now().month) {
+              month1Items.add(value);
+              if (value["name"] == "Хонь") {
+                sheepCount2 = int.parse(value["amount"].toString());
+              } else if (value["name"] == "Ямаа") {
+                goatCount2 = int.parse(value["amount"].toString());
+              } else if (value["name"] == "Үхэр") {
+                cattleCount2 = int.parse(value["amount"].toString());
+              } else if (value["name"] == "Тэмээ") {
+                camelCount2 = int.parse(value["amount"].toString());
+              } else if (value["name"] == "Морь") {
+                horseCount2 = int.parse(value["amount"].toString());
+              }
+              allAnimalCount2 = int.parse(value["amount"].toString());
+            }
+            if (valueDate.year == DateTime.now().year &&
+                valueDate.month <= DateTime.now().month &&
+                valueDate.month >= (DateTime.now().month - 3)) {
+              month3Items.add(value);
+              if (value["name"] == "Хонь") {
+                sheepCount3 = int.parse(value["amount"].toString());
+              } else if (value["name"] == "Ямаа") {
+                goatCount3 = int.parse(value["amount"].toString());
+              } else if (value["name"] == "Үхэр") {
+                cattleCount3 = int.parse(value["amount"].toString());
+              } else if (value["name"] == "Тэмээ") {
+                camelCount3 = int.parse(value["amount"].toString());
+              } else if (value["name"] == "Морь") {
+                horseCount3 = int.parse(value["amount"].toString());
+              }
+              allAnimalCount3 = int.parse(value["amount"].toString());
+            }
+            if (valueDate.year == DateTime.now().year) {
+              year1Items.add(value);
+              if (value["name"] == "Хонь") {
+                sheepCount4 = int.parse(value["amount"].toString());
+              } else if (value["name"] == "Ямаа") {
+                goatCount4 = int.parse(value["amount"].toString());
+              } else if (value["name"] == "Үхэр") {
+                cattleCount4 = int.parse(value["amount"].toString());
+              } else if (value["name"] == "Тэмээ") {
+                camelCount4 = int.parse(value["amount"].toString());
+              } else if (value["name"] == "Морь") {
+                horseCount4 = int.parse(value["amount"].toString());
+              }
+              allAnimalCount4 = int.parse(value["amount"].toString());
             }
           }
         });
@@ -261,6 +322,164 @@ class _AddPageState extends State<AddPage> {
                     contentPadding: EdgeInsets.only(bottom: 8.0),
                     hintText: "Мал тооллого хийсэн газар..",
                   ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(
+                  top: height * 0.03,
+                  right: width * 0.04,
+                  left: width * 0.04,
+                ),
+                child: Column(
+                  children: [
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "Нэмэгдэл",
+                        style: TextStyle(
+                          fontSize: height * 0.022,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: height * 0.01),
+                    Row(
+                      children: [
+                        Text(
+                          "Шинээр төлөлсөн:",
+                          style: TextStyle(
+                            fontSize: height * 0.02,
+                          ),
+                        ),
+                        SizedBox(width: width * 0.04),
+                        Expanded(
+                          child: TextField(
+                            controller: _alive1TEC,
+                            keyboardType: TextInputType.number,
+                            inputFormatters: <TextInputFormatter>[
+                              FilteringTextInputFormatter.digitsOnly,
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: height * 0.01),
+                    Row(
+                      children: [
+                        Text(
+                          "Айлаас ирсэн:",
+                          style: TextStyle(
+                            fontSize: height * 0.02,
+                          ),
+                        ),
+                        SizedBox(width: width * 0.04),
+                        Expanded(
+                          child: TextField(
+                            controller: _alive2TEC,
+                            keyboardType: TextInputType.number,
+                            inputFormatters: <TextInputFormatter>[
+                              FilteringTextInputFormatter.digitsOnly,
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: height * 0.01),
+                    Row(
+                      children: [
+                        Text(
+                          "Тавиур:",
+                          style: TextStyle(
+                            fontSize: height * 0.02,
+                          ),
+                        ),
+                        SizedBox(width: width * 0.04),
+                        Expanded(
+                          child: TextField(
+                            controller: _alive3TEC,
+                            keyboardType: TextInputType.number,
+                            inputFormatters: <TextInputFormatter>[
+                              FilteringTextInputFormatter.digitsOnly,
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: height * 0.02),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "Хорогдол",
+                        style: TextStyle(
+                          fontSize: height * 0.022,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: height * 0.01),
+                    Row(
+                      children: [
+                        Text(
+                          "Үхсэн:",
+                          style: TextStyle(
+                            fontSize: height * 0.02,
+                          ),
+                        ),
+                        SizedBox(width: width * 0.04),
+                        Expanded(
+                          child: TextField(
+                            controller: _dead1TEC,
+                            keyboardType: TextInputType.number,
+                            inputFormatters: <TextInputFormatter>[
+                              FilteringTextInputFormatter.digitsOnly,
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: height * 0.01),
+                    Row(
+                      children: [
+                        Text(
+                          "Зарсан:",
+                          style: TextStyle(
+                            fontSize: height * 0.02,
+                          ),
+                        ),
+                        SizedBox(width: width * 0.04),
+                        Expanded(
+                          child: TextField(
+                            controller: _dead2TEC,
+                            keyboardType: TextInputType.number,
+                            inputFormatters: <TextInputFormatter>[
+                              FilteringTextInputFormatter.digitsOnly,
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: height * 0.01),
+                    Row(
+                      children: [
+                        Text(
+                          "Идсэн:",
+                          style: TextStyle(
+                            fontSize: height * 0.02,
+                          ),
+                        ),
+                        SizedBox(width: width * 0.04),
+                        Expanded(
+                          child: TextField(
+                            controller: _dead3TEC,
+                            keyboardType: TextInputType.number,
+                            inputFormatters: <TextInputFormatter>[
+                              FilteringTextInputFormatter.digitsOnly,
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
               SizedBox(height: height * 0.1),

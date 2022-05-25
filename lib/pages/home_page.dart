@@ -7,6 +7,7 @@ import 'package:too/helpers/api_url.dart';
 import 'package:too/helpers/app_preferences.dart';
 import 'package:too/helpers/components.dart';
 import 'package:too/pages/add/add_page.dart';
+import 'package:too/pages/auth/auth_page.dart';
 import 'package:too/pages/history/history_page.dart';
 import 'package:http/http.dart' as https;
 
@@ -47,6 +48,11 @@ class _HomePageState extends State<HomePage> {
         allGoatCount = body["goatCount"];
         allAllAnimalCount = body["allAnimalCount"];
         nowItems.clear();
+        sheepCount = 0;
+        goatCount = 0;
+        camelCount = 0;
+        horseCount = 0;
+        allAnimalCount = 0;
         historyItems.forEach((value) {
           if (value["created_at"] != null) {
             DateTime valueDate = DateTime.parse(value["created_at"].toString());
@@ -55,17 +61,65 @@ class _HomePageState extends State<HomePage> {
                 valueDate.day == _now.day) {
               nowItems.add(value);
               if (value["name"] == "Хонь") {
-                sheepCount += int.parse(value["amount"].toString());
+                sheepCount = int.parse(value["amount"].toString());
               } else if (value["name"] == "Ямаа") {
-                goatCount += int.parse(value["amount"].toString());
+                goatCount = int.parse(value["amount"].toString());
               } else if (value["name"] == "Үхэр") {
-                cattleCount += int.parse(value["amount"].toString());
+                cattleCount = int.parse(value["amount"].toString());
               } else if (value["name"] == "Тэмээ") {
-                camelCount += int.parse(value["amount"].toString());
+                camelCount = int.parse(value["amount"].toString());
               } else if (value["name"] == "Морь") {
-                horseCount += int.parse(value["amount"].toString());
+                horseCount = int.parse(value["amount"].toString());
               }
               allAnimalCount += int.parse(value["amount"].toString());
+            }
+            if (valueDate.year == DateTime.now().year &&
+                valueDate.month == DateTime.now().month) {
+              month1Items.add(value);
+              if (value["name"] == "Хонь") {
+                sheepCount2 = int.parse(value["amount"].toString());
+              } else if (value["name"] == "Ямаа") {
+                goatCount2 = int.parse(value["amount"].toString());
+              } else if (value["name"] == "Үхэр") {
+                cattleCount2 = int.parse(value["amount"].toString());
+              } else if (value["name"] == "Тэмээ") {
+                camelCount2 = int.parse(value["amount"].toString());
+              } else if (value["name"] == "Морь") {
+                horseCount2 = int.parse(value["amount"].toString());
+              }
+              allAnimalCount2 = int.parse(value["amount"].toString());
+            }
+            if (valueDate.year == DateTime.now().year &&
+                valueDate.month <= DateTime.now().month &&
+                valueDate.month >= (DateTime.now().month - 3)) {
+              month3Items.add(value);
+              if (value["name"] == "Хонь") {
+                sheepCount3 = int.parse(value["amount"].toString());
+              } else if (value["name"] == "Ямаа") {
+                goatCount3 = int.parse(value["amount"].toString());
+              } else if (value["name"] == "Үхэр") {
+                cattleCount3 = int.parse(value["amount"].toString());
+              } else if (value["name"] == "Тэмээ") {
+                camelCount3 = int.parse(value["amount"].toString());
+              } else if (value["name"] == "Морь") {
+                horseCount3 = int.parse(value["amount"].toString());
+              }
+              allAnimalCount3 = int.parse(value["amount"].toString());
+            }
+            if (valueDate.year == DateTime.now().year) {
+              year1Items.add(value);
+              if (value["name"] == "Хонь") {
+                sheepCount4 = int.parse(value["amount"].toString());
+              } else if (value["name"] == "Ямаа") {
+                goatCount4 = int.parse(value["amount"].toString());
+              } else if (value["name"] == "Үхэр") {
+                cattleCount4 = int.parse(value["amount"].toString());
+              } else if (value["name"] == "Тэмээ") {
+                camelCount4 = int.parse(value["amount"].toString());
+              } else if (value["name"] == "Морь") {
+                horseCount4 = int.parse(value["amount"].toString());
+              }
+              allAnimalCount4 = int.parse(value["amount"].toString());
             }
           }
         });
@@ -125,10 +179,37 @@ class _HomePageState extends State<HomePage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       IconButton(
-                        onPressed: null,
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: const Text("Гарах"),
+                              content:
+                                  const Text("Та гарахдаа итгэлтэй байна уу?"),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    back(context);
+                                  },
+                                  child: const Text("Үгүй"),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    token = null;
+                                    user = null;
+                                    historyItems.clear();
+                                    nowItems.clear();
+                                    goAndClear(context, const AuthPage());
+                                  },
+                                  child: const Text("Тийм"),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
                         icon: Icon(
-                          Icons.menu,
-                          color: Colors.transparent,
+                          Icons.close,
+                          color: kPrimaryColor,
                         ),
                       ),
                       const Ctext(
