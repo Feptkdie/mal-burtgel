@@ -8,6 +8,7 @@ import 'package:too/helpers/components.dart';
 import 'package:http/http.dart' as https;
 import 'package:too/pages/auth/register_page.dart';
 import 'package:too/pages/home_page.dart';
+import 'package:too/pages/reset_password/reset_password.dart';
 
 import '../../data.dart';
 
@@ -101,13 +102,13 @@ class _AuthPageState extends State<AuthPage> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                SizedBox(height: height * 0.03),
+                SizedBox(height: height * 0.16),
                 Ctext(
                   text: "Мал бүртгэл",
                   normal: true,
                   bold: true,
                 ),
-                SizedBox(height: height * 0.26),
+                SizedBox(height: height * 0.16),
                 Padding(
                   padding: EdgeInsets.only(
                     left: width * 0.1,
@@ -133,6 +134,21 @@ class _AuthPageState extends State<AuthPage> {
                     decoration: InputDecoration(
                       contentPadding: EdgeInsets.only(bottom: 8.0),
                       labelText: "Нүүц үг",
+                    ),
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                      left: width * 0.1,
+                      top: height * 0.01,
+                    ),
+                    child: TextButton(
+                      onPressed: () {
+                        go(context, const ResetPassword());
+                      },
+                      child: const Text("Нууц үг мартсан эсэх?"),
                     ),
                   ),
                 ),

@@ -71,7 +71,7 @@ class _AddPageState extends State<AddPage> {
       var body = json.decode(response.body);
       if (body["status"]) {
         historyItems.clear();
-        body["animals"].forEach((value) {
+        body["animals"].reversed.forEach((value) {
           historyItems.add(value);
         });
         allHorseCount = body["horseCount"];
@@ -82,6 +82,22 @@ class _AddPageState extends State<AddPage> {
         allAllAnimalCount = body["allAnimalCount"];
         nowItems.clear();
         historyItems.forEach((value) {
+          if (value["name"] == "Хонь") {
+            allSheepCount = int.parse(value["amount"].toString());
+          } else if (value["name"] == "Ямаа") {
+            allGoatCount = int.parse(value["amount"].toString());
+          } else if (value["name"] == "Үхэр") {
+            allCattleCount = int.parse(value["amount"].toString());
+          } else if (value["name"] == "Тэмээ") {
+            allCamelCount = int.parse(value["amount"].toString());
+          } else if (value["name"] == "Морь") {
+            allHorseCount = int.parse(value["amount"].toString());
+          }
+          allAllAnimalCount = allSheepCount +
+              allGoatCount +
+              allCamelCount +
+              allCattleCount +
+              allHorseCount;
           if (value["created_at"] != null) {
             DateTime valueDate = DateTime.parse(value["created_at"].toString());
             if (valueDate.year == DateTime.now().year &&

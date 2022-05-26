@@ -4,6 +4,8 @@ List nowItems = [];
 List month1Items = [];
 List month3Items = [];
 List year1Items = [];
+List mailItems = [];
+List workerItems = [];
 
 bool isHomeFirstTime = true;
 

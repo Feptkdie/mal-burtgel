@@ -62,7 +62,7 @@ class _RegisterPageState extends State<RegisterPage> {
           "owner_phone": ownerPhone,
         },
       );
-
+      print(response.body);
       if (response.statusCode == 201) {
         var body = json.decode(response.body);
         if (body["status"]) {
