@@ -622,7 +622,7 @@ class _HomePageState extends State<HomePage> {
           CSizedButton(
             cheight: 0.05,
             cwidth: 0.8,
-            text: "Өмнөх тооллогын дэлгэрэнгүй",
+            text: "Өмнөх тооллогын түүх",
             normal: true,
             onPress: () {
               go(context, HistoryPage(
