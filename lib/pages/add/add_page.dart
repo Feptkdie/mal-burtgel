@@ -73,7 +73,7 @@ class _AddPageState extends State<AddPage> {
       var body = json.decode(response.body);
       if (body["status"]) {
         historyItems.clear();
-        body["animals"].forEach((value) {
+        body["animals"].reversed.forEach((value) {
           historyItems.add(value);
         });
         allHorseCount = body["horseCount"];

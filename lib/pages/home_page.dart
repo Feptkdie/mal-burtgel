@@ -46,7 +46,7 @@ class _HomePageState extends State<HomePage> {
       var body = json.decode(response.body);
       if (body["status"]) {
         historyItems.clear();
-        body["animals"].forEach((value) {
+        body["animals"].reversed.forEach((value) {
           historyItems.add(value);
         });
         allHorseCount = body["horseCount"];
@@ -177,7 +177,7 @@ class _HomePageState extends State<HomePage> {
       var body = json.decode(response2.body);
       if (body["status"]) {
         mailItems.clear();
-        body["mails"].forEach((value) {
+        body["mails"].reversed.forEach((value) {
           mailItems.add(value);
         });
       } else {
@@ -212,7 +212,7 @@ class _HomePageState extends State<HomePage> {
       var body = json.decode(response.body);
       if (body["status"]) {
         workerItems.clear();
-        body["users"].forEach((value) {
+        body["users"].reversed.forEach((value) {
           workerItems.add(value);
         });
       } else {

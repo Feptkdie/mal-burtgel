@@ -97,7 +97,7 @@ class _RegisterPageState extends State<RegisterPage> {
     if (response.statusCode == 201) {
       var body = json.decode(response.body);
       ownerItems.clear();
-      body["users"].forEach((value) {
+      body["users"].reversed.forEach((value) {
         ownerItems.add(value);
       });
       if (ownerItems.isEmpty) {

@@ -39,7 +39,7 @@ class _HistoryPageState extends State<HistoryPage> {
       if (body["status"]) {
         showSnackBar(body["message"], globalKey);
         nowItems.clear();
-        body["animals"].forEach((value) {
+        body["animals"].reversed.forEach((value) {
           nowItems.add(value);
         });
         allHorseCount = body["horseCount"];
