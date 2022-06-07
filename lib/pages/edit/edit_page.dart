@@ -69,7 +69,7 @@ class _EditPageState extends State<EditPage> {
       if (body["status"]) {
         showSnackBar(body["message"], globalKey);
         historyItems.clear();
-        body["animals"].reversed.forEach((value) {
+        body["animals"].forEach((value) {
           historyItems.add(value);
         });
         allHorseCount = body["horseCount"];

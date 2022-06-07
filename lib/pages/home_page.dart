@@ -46,7 +46,7 @@ class _HomePageState extends State<HomePage> {
       var body = json.decode(response.body);
       if (body["status"]) {
         historyItems.clear();
-        body["animals"].reversed.forEach((value) {
+        body["animals"].forEach((value) {
           historyItems.add(value);
         });
         allHorseCount = body["horseCount"];

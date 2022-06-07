@@ -39,7 +39,7 @@ class _HistoryPageState extends State<HistoryPage> {
       if (body["status"]) {
         showSnackBar(body["message"], globalKey);
         nowItems.clear();
-        body["animals"].reversed.forEach((value) {
+        body["animals"].forEach((value) {
           nowItems.add(value);
         });
         allHorseCount = body["horseCount"];
@@ -211,6 +211,7 @@ class _HistoryPageState extends State<HistoryPage> {
             SizedBox(height: height * 0.03),
             Expanded(
               child: ListView.builder(
+                reverse: true,
                 itemCount: historyItems.length,
                 itemBuilder: (context, index) => Column(
                   children: [
@@ -1655,6 +1656,33 @@ class _HistoryPageState extends State<HistoryPage> {
                                             ],
                                           ),
                                         ),
+                                        SizedBox(height: height * 0.01),
+                                        Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Row(
+                                            children: [
+                                              Icon(
+                                                Icons.date_range,
+                                                color: kPrimaryColor
+                                                    .withOpacity(0.6),
+                                                size: height * 0.024,
+                                              ),
+                                              Expanded(
+                                                child: Ctext(
+                                                  text: " " +
+                                                      year1Items[index]
+                                                              ["created_at"]
+                                                          .toString()
+                                                          .substring(0, 10),
+                                                  maxLine: 1,
+                                                  textOverflow:
+                                                      TextOverflow.ellipsis,
+                                                  small: true,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   ),
@@ -2087,6 +2115,33 @@ class _HistoryPageState extends State<HistoryPage> {
                                                   textOverflow:
                                                       TextOverflow.ellipsis,
                                                   normal: true,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        SizedBox(height: height * 0.01),
+                                        Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Row(
+                                            children: [
+                                              Icon(
+                                                Icons.date_range,
+                                                color: kPrimaryColor
+                                                    .withOpacity(0.6),
+                                                size: height * 0.024,
+                                              ),
+                                              Expanded(
+                                                child: Ctext(
+                                                  text: " " +
+                                                      month3Items[index]
+                                                              ["created_at"]
+                                                          .toString()
+                                                          .substring(0, 10),
+                                                  maxLine: 1,
+                                                  textOverflow:
+                                                      TextOverflow.ellipsis,
+                                                  small: true,
                                                 ),
                                               ),
                                             ],
@@ -2529,6 +2584,33 @@ class _HistoryPageState extends State<HistoryPage> {
                                             ],
                                           ),
                                         ),
+                                        SizedBox(height: height * 0.01),
+                                        Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Row(
+                                            children: [
+                                              Icon(
+                                                Icons.date_range,
+                                                color: kPrimaryColor
+                                                    .withOpacity(0.6),
+                                                size: height * 0.024,
+                                              ),
+                                              Expanded(
+                                                child: Ctext(
+                                                  text: " " +
+                                                      month1Items[index]
+                                                              ["created_at"]
+                                                          .toString()
+                                                          .substring(0, 10),
+                                                  maxLine: 1,
+                                                  textOverflow:
+                                                      TextOverflow.ellipsis,
+                                                  small: true,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   ),
@@ -2950,6 +3032,33 @@ class _HistoryPageState extends State<HistoryPage> {
                                                   textOverflow:
                                                       TextOverflow.ellipsis,
                                                   normal: true,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        SizedBox(height: height * 0.01),
+                                        Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Row(
+                                            children: [
+                                              Icon(
+                                                Icons.date_range,
+                                                color: kPrimaryColor
+                                                    .withOpacity(0.6),
+                                                size: height * 0.024,
+                                              ),
+                                              Expanded(
+                                                child: Ctext(
+                                                  text: " " +
+                                                      nowItems[index]
+                                                              ["created_at"]
+                                                          .toString()
+                                                          .substring(0, 10),
+                                                  maxLine: 1,
+                                                  textOverflow:
+                                                      TextOverflow.ellipsis,
+                                                  small: true,
                                                 ),
                                               ),
                                             ],
